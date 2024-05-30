@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:app_tesisinver/screens/home/home_screen.dart';
+import 'package:app_tesisinver/screens/completeprofile/complete_profile_screen.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -17,9 +20,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
-  void _submitForm() {
+  void _submitForm() async {
     if (_formKey.currentState!.validate()) {
-      // Aquí es donde puedes enviar los datos al servidor Node.js para almacenarlos en la base de datos MySQL
+      final response = await http.post(
+        Uri.parse('http://192.168.1.64:3000/register'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'email': _emailController.text,
+          'phone': _phoneController.text,
+          'password': _passwordController.text,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        // Navegar a la pantalla de completar el perfil
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => CompleteProfileScreen()));
+      } else {
+        // Mostrar error
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error al registrar usuario')),
+        );
+      }
     }
   }
 
@@ -38,9 +62,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Center(
-                  child: Image.asset('assets/logo.png',
-                      height:
-                          100), // Reemplaza 'assets/logo.png' con la ruta de tu logo
+                  child: Image.asset('assets/logo.png', height: 100),
                 ),
                 SizedBox(height: 20),
                 TextFormField(
