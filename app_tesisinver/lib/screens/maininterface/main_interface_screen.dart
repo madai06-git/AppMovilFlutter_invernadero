@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:app_tesisinver/screens/home/home_screen.dart';
 import 'package:app_tesisinver/screens/deleteaccount/delete_account.dart';
 import 'package:app_tesisinver/screens/automategreenhouses/automate_greenhouse.dart';
+import 'package:app_tesisinver/screens/monitorcultivation/monitor_interface.dart';
 
 class MainInterfaceScreen extends StatelessWidget {
   @override
@@ -44,7 +45,8 @@ class MainInterfaceScreen extends StatelessWidget {
             ListTile(
               title: Text('Monitorear cultivo'),
               onTap: () {
-                // Aquí puedes agregar la lógica para navegar a la pantalla de monitoreo de cultivo
+                Navigator.pushReplacementNamed(context,
+                    '/monitor_interface'); // Navegar a la pantalla de monitorear cultivos
               },
             ),
             ListTile(
