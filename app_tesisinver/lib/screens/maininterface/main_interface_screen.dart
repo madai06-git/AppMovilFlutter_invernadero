@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:app_tesisinver/screens/home/home_screen.dart';
 import 'package:app_tesisinver/screens/deleteaccount/delete_account.dart';
+import 'package:app_tesisinver/screens/automategreenhouses/automate_greenhouse.dart';
 
 class MainInterfaceScreen extends StatelessWidget {
   @override
@@ -36,7 +37,8 @@ class MainInterfaceScreen extends StatelessWidget {
             ListTile(
               title: Text('Registrar cultivo'),
               onTap: () {
-                // Aquí puedes agregar la lógica para navegar a la pantalla de registro de cultivo
+                Navigator.pushReplacementNamed(context,
+                    '/automate_greenhouse'); // Navegar a la pantalla de inicio
               },
             ),
             ListTile(
@@ -78,7 +80,19 @@ class MainInterfaceScreen extends StatelessWidget {
         ),
       ),
       body: Center(
-        child: Text('Contenido de la pantalla principal'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/logo.png', height: 100),
+            SizedBox(
+                height: 20), // Espacio entre el logo y el texto de bienvenida
+            Text(
+              '¡BIENVENIDO A AGROMONITOR! Tu herramienta todo en uno para monitorear y controlar invernaderos y huertos traspatio. ¡comienza a cultivar tus sueños hoy mismo!',
+              textAlign: TextAlign.center, // Centrar el texto
+              style: TextStyle(fontSize: 16), // Tamaño de fuente
+            ),
+          ],
+        ),
       ),
     );
   }
