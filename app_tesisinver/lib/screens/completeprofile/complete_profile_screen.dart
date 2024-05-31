@@ -13,6 +13,9 @@ class CompleteProfileScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Center(
+              child: Image.asset('assets/logo.png', height: 100),
+            ),
             ElevatedButton(
               onPressed: () {
                 // Aquí navegas a la pantalla de automatizar invernaderos
