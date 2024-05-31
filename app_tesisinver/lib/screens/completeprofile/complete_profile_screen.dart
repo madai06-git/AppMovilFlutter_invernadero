@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:app_tesisinver/screens/automategreenhouses/automate_greenhouse.dart';
 
 class CompleteProfileScreen extends StatelessWidget {
   const CompleteProfileScreen({Key? key}) : super(key: key);
@@ -18,8 +19,11 @@ class CompleteProfileScreen extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                // Aquí navegas a la pantalla de automatizar invernaderos
-                Navigator.pushNamed(context, '/automate_greenhouses');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AutomateGreenhouseScreen()),
+                );
               },
               child: Text('Automatizar Invernaderos'),
             ),
