@@ -3,7 +3,7 @@ import 'package:app_tesisinver/screens/register/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:app_tesisinver/screens/home/home_screen.dart';
 import 'package:app_tesisinver/screens/completeprofile/complete_profile_screen.dart';
-import 'package:app_tesisinver/screens/deleteaccount/delete_account.dart';
+//import 'package:app_tesisinver/screens/deleteaccount/delete_account.dart';
 import 'package:app_tesisinver/screens/maininterface/main_interface_screen.dart';
 import 'package:app_tesisinver/screens/automategreenhouses/automate_greenhouse.dart';
 

@@ -60,6 +60,9 @@ class LoginScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Center(
+                child: Image.asset('assets/logo.png', height: 100),
+              ),
               Text('Bienvenido a AgroMonitor',
                   style: TextStyle(fontSize: 24.0)),
               SizedBox(height: 20.0),
