@@ -65,7 +65,7 @@ class _MonitorBerriesScreenState extends State<MonitorBerriesScreen> {
             SizedBox(height: 20),
             Text(
               'Monitor de Berries',
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 30),
             ),
             SizedBox(height: 20),
             // Mostrar los datos de temperatura y humedad

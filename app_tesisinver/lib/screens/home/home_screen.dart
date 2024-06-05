@@ -16,7 +16,7 @@ class HomeScreen extends StatelessWidget {
                 'assets/logo.png',
                 height: 150.0,
               ),
-              SizedBox(height: 50.0),
+              SizedBox(height: 50),
               CustomButton(
                 text: 'Crear una cuenta nueva',
                 backgroundColor: Colors.green,

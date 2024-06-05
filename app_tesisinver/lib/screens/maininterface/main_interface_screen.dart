@@ -52,6 +52,7 @@ class MainInterfaceScreen extends StatelessWidget {
             ListTile(
               title: Text('Controlar cultivo'),
               onTap: () {
+                Navigator.pushReplacementNamed(context, '/control_interface');
                 // Aquí puedes agregar la lógica para navegar a la pantalla de control de cultivo
               },
             ),

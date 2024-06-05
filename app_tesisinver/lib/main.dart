@@ -1,3 +1,5 @@
+import 'package:app_tesisinver/screens/controlcultivation/control_interface.dart';
+import 'package:app_tesisinver/screens/controltomato/controltomato.dart';
 import 'package:app_tesisinver/screens/login/login_screen.dart';
 import 'package:app_tesisinver/screens/monitorberrie/monitorberrie.dart';
 import 'package:app_tesisinver/screens/monitorcucumber/monitorcucumber.dart';
@@ -37,6 +39,8 @@ class MyApp extends StatelessWidget {
         '/monitorchile': (context) => MonitorChileScreen(),
         '/monitorberrie': (context) => MonitorBerriesScreen(),
         '/monitorpepino': (context) => MonitorCucumberScreen(),
+        '/controltomato': (context) => ControlTomato(),
+        '/control_interface': (context) => ControlInterfaceScreen(),
       },
     );
   }

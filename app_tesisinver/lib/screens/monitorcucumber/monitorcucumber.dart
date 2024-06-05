@@ -65,7 +65,7 @@ class _MonitorCucumberScreenState extends State<MonitorCucumberScreen> {
             SizedBox(height: 20),
             Text(
               'Monitor de pepino',
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 30),
             ),
             SizedBox(height: 20),
             // Mostrar los datos de temperatura y humedad
