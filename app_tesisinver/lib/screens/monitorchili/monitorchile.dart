@@ -11,17 +11,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: MonitorTomatoScreen(),
+      home: MonitorChileScreen(),
     );
   }
 }
 
-class MonitorTomatoScreen extends StatefulWidget {
+class MonitorChileScreen extends StatefulWidget {
   @override
-  _MonitorTomatoScreenState createState() => _MonitorTomatoScreenState();
+  _MonitorChileScreenState createState() => _MonitorChileScreenState();
 }
 
-class _MonitorTomatoScreenState extends State<MonitorTomatoScreen> {
+class _MonitorChileScreenState extends State<MonitorChileScreen> {
   double temperature = 0.0;
   double humidity = 0.0;
 
@@ -54,7 +54,7 @@ class _MonitorTomatoScreenState extends State<MonitorTomatoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Monitor de Tomates'),
+        title: Text('Monitor de Chiles'),
       ),
       body: Center(
         child: Column(
@@ -64,7 +64,7 @@ class _MonitorTomatoScreenState extends State<MonitorTomatoScreen> {
             Image.asset('assets/logo.png'),
             SizedBox(height: 20),
             Text(
-              'Monitor de Tomates',
+              'Monitor de chile',
               style: TextStyle(fontSize: 20),
             ),
             SizedBox(height: 20),

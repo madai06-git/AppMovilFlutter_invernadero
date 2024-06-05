@@ -1,4 +1,6 @@
 import 'package:app_tesisinver/screens/login/login_screen.dart';
+import 'package:app_tesisinver/screens/monitorberrie/monitorberrie.dart';
+import 'package:app_tesisinver/screens/monitorcucumber/monitorcucumber.dart';
 import 'package:app_tesisinver/screens/monitorcultivation/monitor_interface.dart';
 import 'package:app_tesisinver/screens/monitortomato/monitortomato.dart';
 import 'package:app_tesisinver/screens/register/register_screen.dart';
@@ -8,7 +10,7 @@ import 'package:app_tesisinver/screens/completeprofile/complete_profile_screen.d
 //import 'package:app_tesisinver/screens/deleteaccount/delete_account.dart';
 import 'package:app_tesisinver/screens/maininterface/main_interface_screen.dart';
 import 'package:app_tesisinver/screens/automategreenhouses/automate_greenhouse.dart';
-import 'package:app_tesisinver/screens/monitorcultivation/monitor_interface.dart';
+import 'package:app_tesisinver/screens/monitorchili/monitorchile.dart';
 
 void main() {
   runApp(MyApp());
@@ -31,7 +33,10 @@ class MyApp extends StatelessWidget {
         '/main_interface_screen': (context) => MainInterfaceScreen(),
         '/automate_greenhouse': (context) => AutomateGreenhouseScreen(),
         '/monitor_interface': (context) => MonitorInterfaceScreen(),
-        '/monitortomato': (context) => MonitorTomatoScreen()
+        '/monitortomato': (context) => MonitorTomatoScreen(),
+        '/monitorchile': (context) => MonitorChileScreen(),
+        '/monitorberrie': (context) => MonitorBerriesScreen(),
+        '/monitorpepino': (context) => MonitorCucumberScreen(),
       },
     );
   }

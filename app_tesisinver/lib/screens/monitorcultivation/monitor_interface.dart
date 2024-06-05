@@ -44,20 +44,23 @@ class _MonitorInterfaceState extends State<MonitorInterfaceScreen> {
                   },
                 ),
                 CropButton(
-                  crop: 'Chile',
-                  isSelected: selectedCrops.contains('Chile'),
-                  onTap: () => toggleCropSelection('Chile'),
-                ),
+                    crop: 'Chile',
+                    isSelected: selectedCrops.contains('Chile'),
+                    onTap: () {
+                      Navigator.pushReplacementNamed(context, '/monitorchile');
+                    }),
                 CropButton(
-                  crop: 'Berrie',
-                  isSelected: selectedCrops.contains('Berrie'),
-                  onTap: () => toggleCropSelection('Berrie'),
-                ),
+                    crop: 'Berrie',
+                    isSelected: selectedCrops.contains('Berrie'),
+                    onTap: () {
+                      Navigator.pushReplacementNamed(context, '/monitorberrie');
+                    }),
                 CropButton(
-                  crop: 'Pepino',
-                  isSelected: selectedCrops.contains('Pepino'),
-                  onTap: () => toggleCropSelection('Pepino'),
-                ),
+                    crop: 'Pepino',
+                    isSelected: selectedCrops.contains('Pepino'),
+                    onTap: () {
+                      Navigator.pushReplacementNamed(context, '/monitorpepino');
+                    }),
               ],
             ),
             SizedBox(height: 20),

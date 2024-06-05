@@ -23,7 +23,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       final response = await http.post(
-        Uri.parse('http://192.168.1.64:3000/register'),
+        Uri.parse('http://192.168.1.75:3000/register'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
