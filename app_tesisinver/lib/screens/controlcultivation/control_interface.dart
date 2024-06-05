@@ -48,19 +48,21 @@ class _ControlInterfaceState extends State<ControlInterfaceScreen> {
                     crop: 'Chile',
                     isSelected: selectedCrops.contains('Chile'),
                     onTap: () {
-                      Navigator.pushReplacementNamed(context, '/monitorchile');
+                      Navigator.pushReplacementNamed(context, '/controlchili');
                     }),
                 CropButton(
                     crop: 'Berrie',
                     isSelected: selectedCrops.contains('Berrie'),
                     onTap: () {
-                      Navigator.pushReplacementNamed(context, '/monitorberrie');
+                      Navigator.pushReplacementNamed(
+                          context, '/controlberries');
                     }),
                 CropButton(
                     crop: 'Pepino',
                     isSelected: selectedCrops.contains('Pepino'),
                     onTap: () {
-                      Navigator.pushReplacementNamed(context, '/monitorpepino');
+                      Navigator.pushReplacementNamed(
+                          context, '/controlcucumber');
                     }),
               ],
             ),
