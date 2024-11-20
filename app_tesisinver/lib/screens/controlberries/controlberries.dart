@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:app_tesisinver/screens/maininterface/main_interface_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ControlBerries extends StatefulWidget {
   @override
@@ -10,9 +12,10 @@ class ControlBerries extends StatefulWidget {
 class _ControlBerriesState extends State<ControlBerries> {
   bool isCalefaccionOn = false;
   bool isVentilacionOn = false;
+  bool isRiegoOn = false;
 
   final String serverUrl =
-      'http://192.168.1.75:3000'; // Reemplaza con la URL de tu servidor
+      'http://193.168.1.69:3000'; // Reemplaza con la URL de tu servidor
 
   Future<void> sendCommand(String command) async {
     final url = Uri.parse('$serverUrl/setCommand');
@@ -37,14 +40,21 @@ class _ControlBerriesState extends State<ControlBerries> {
     setState(() {
       isCalefaccionOn = !isCalefaccionOn;
     });
-    sendCommand(isCalefaccionOn ? 'calefaccion_off' : 'calefaccion_on');
+    sendCommand(isCalefaccionOn ? 'calefaccion_on' : 'calefaccion_off');
   }
 
   void toggleVentilacion() {
     setState(() {
       isVentilacionOn = !isVentilacionOn;
     });
-    sendCommand(isVentilacionOn ? 'ventilacion_off' : 'ventilacion_on');
+    sendCommand(isVentilacionOn ? 'ventilacion_on' : 'ventilacion_off');
+  }
+
+  void toggleRiego() {
+    setState(() {
+      isRiegoOn = !isRiegoOn;
+    });
+    sendCommand(isRiegoOn ? 'riego_on' : 'riego_off');
   }
 
   @override
@@ -72,7 +82,7 @@ class _ControlBerriesState extends State<ControlBerries> {
               onPressed: toggleCalefaccion,
               child: Text(isCalefaccionOn ? 'OFF' : 'ON'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: isCalefaccionOn ? Colors.red : Colors.green,
+                backgroundColor: isCalefaccionOn ? Colors.green : Colors.red,
               ),
             ),
             SizedBox(height: 5),
@@ -84,13 +94,32 @@ class _ControlBerriesState extends State<ControlBerries> {
               onPressed: toggleVentilacion,
               child: Text(isVentilacionOn ? 'OFF' : 'ON'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: isVentilacionOn ? Colors.red : Colors.green,
+                backgroundColor: isVentilacionOn ? Colors.green : Colors.red,
+              ),
+            ),
+            SizedBox(height: 5),
+            Text(
+              'Riego',
+              style: TextStyle(fontSize: 20),
+            ),
+            ElevatedButton(
+              onPressed: toggleRiego,
+              child: Text(isRiegoOn ? 'OFF' : 'ON'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: isRiegoOn ? Colors.green : Colors.red,
               ),
             ),
             ElevatedButton(
-              onPressed: () {
-                Navigator.pushReplacementNamed(context,
-                    '/main_interface_screen'); // Navegar a la pantalla de inicio
+              onPressed: () async {
+                final prefs = await SharedPreferences.getInstance();
+                final userId = prefs.getInt('user_id') ??
+                    0; // Obtén el userId almacenado en SharedPreferences
+
+                Navigator.pushReplacementNamed(
+                  context,
+                  '/main_interface_screen',
+                  arguments: userId, // Pasa el userId aquí
+                );
               },
               child: Text('Atrás'),
             ),

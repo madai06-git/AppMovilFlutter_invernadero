@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:app_tesisinver/screens/maininterface/main_interface_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(MyApp());
@@ -34,7 +35,7 @@ class _MonitorCucumberScreenState extends State<MonitorCucumberScreen> {
 
   Future<void> fetchData() async {
     final response =
-        await http.get(Uri.parse('http://192.168.1.75:3000/api/data'));
+        await http.get(Uri.parse('http://193.168.1.69:3000/api/data'));
 
     print('Estado de la respuesta: ${response.statusCode}');
     print('Respuesta: ${response.body}');
@@ -73,9 +74,16 @@ class _MonitorCucumberScreenState extends State<MonitorCucumberScreen> {
             Text('Humedad: $humidity %'),
 
             ElevatedButton(
-              onPressed: () {
-                Navigator.pushReplacementNamed(context,
-                    '/main_interface_screen'); // Navegar a la pantalla de inicio
+              onPressed: () async {
+                final prefs = await SharedPreferences.getInstance();
+                final userId = prefs.getInt('user_id') ??
+                    0; // Obtén el userId almacenado en SharedPreferences
+
+                Navigator.pushReplacementNamed(
+                  context,
+                  '/main_interface_screen',
+                  arguments: userId, // Pasa el userId aquí
+                );
               },
               child: Text('Atrás'),
             ),

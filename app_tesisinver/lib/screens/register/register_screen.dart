@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:app_tesisinver/screens/home/home_screen.dart';
 import 'package:app_tesisinver/screens/completeprofile/complete_profile_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -23,7 +25,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       final response = await http.post(
-        Uri.parse('http://192.168.1.75:3000/register'),
+        Uri.parse('http://193.168.1.69:3000/register'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -35,9 +37,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
       );
 
       if (response.statusCode == 200) {
-        // Navegar a la pantalla de completar el perfil
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => CompleteProfileScreen()));
+        // Intentamos decodificar la respuesta JSON
+        final Map<String, dynamic> responseData = json.decode(response.body);
+
+        // Asegúrate de que el servidor haya enviado el 'user_id'
+        if (responseData.containsKey('user_id')) {
+          final int userId = responseData['user_id']; // Obtener el user_id
+
+          // Guardar el user_id en SharedPreferences
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setInt('user_id', userId);
+
+          // Ahora, puedes navegar a la siguiente pantalla
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CompleteProfileScreen()),
+          );
+        } else {
+          // Si no se encuentra el user_id en la respuesta
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                content: Text('Error: user_id no encontrado en la respuesta')),
+          );
+        }
       } else {
         // Mostrar error
         ScaffoldMessenger.of(context).showSnackBar(

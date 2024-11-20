@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:app_tesisinver/screens/maininterface/main_interface_screen.dart';
 
 class ControlTomato extends StatefulWidget {
   @override
@@ -10,9 +12,10 @@ class ControlTomato extends StatefulWidget {
 class _ControlTomatoState extends State<ControlTomato> {
   bool isCalefaccionOn = false;
   bool isVentilacionOn = false;
+  bool isRiegoOn = false;
 
   final String serverUrl =
-      'http://192.168.1.75:3000'; // Reemplaza con la URL de tu servidor
+      'http://193.168.1.69:3000'; // Reemplaza con la URL de tu servidor
 
   Future<void> sendCommand(String command) async {
     final url = Uri.parse('$serverUrl/setCommand');
@@ -37,15 +40,39 @@ class _ControlTomatoState extends State<ControlTomato> {
     setState(() {
       isCalefaccionOn = !isCalefaccionOn;
     });
-    sendCommand(isCalefaccionOn ? 'calefaccion_off' : 'calefaccion_on');
+    sendCommand(isCalefaccionOn ? 'calefaccion_on' : 'calefaccion_off');
   }
 
   void toggleVentilacion() {
     setState(() {
       isVentilacionOn = !isVentilacionOn;
     });
-    sendCommand(isVentilacionOn ? 'ventilacion_off' : 'ventilacion_on');
+    sendCommand(isVentilacionOn ? 'ventilacion_on' : 'ventilacion_off');
   }
+
+  void toggleRiego() {
+    setState(() {
+      isRiegoOn = !isRiegoOn;
+    });
+    sendCommand(isRiegoOn ? 'riego_on' : 'riego_off');
+  }
+
+  /* @override
+  void initState() {
+    super.initState();
+    toggleMode(
+        "modo_control"); // Cambia al modo de control cuando entras en ControlTomato
+  }
+
+  Future<void> toggleMode(String mode) async {
+    final Uri uri = Uri.parse('http://192.168.1.72:3000/setMode');
+    final response = await http.post(uri,
+        body: json.encode({"mode": mode}),
+        headers: {"Content-Type": "application/json"});
+    if (response.statusCode != 200) {
+      print('Error al cambiar el modo: ${response.statusCode}');
+    }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -70,9 +97,9 @@ class _ControlTomatoState extends State<ControlTomato> {
             ),
             ElevatedButton(
               onPressed: toggleCalefaccion,
-              child: Text(isCalefaccionOn ? 'OFF' : 'ON'),
+              child: Text(isCalefaccionOn ? 'ON' : 'OFF'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: isCalefaccionOn ? Colors.red : Colors.green,
+                backgroundColor: isCalefaccionOn ? Colors.green : Colors.red,
               ),
             ),
             SizedBox(height: 5),
@@ -82,15 +109,34 @@ class _ControlTomatoState extends State<ControlTomato> {
             ),
             ElevatedButton(
               onPressed: toggleVentilacion,
-              child: Text(isVentilacionOn ? 'OFF' : 'ON'),
+              child: Text(isVentilacionOn ? 'ON' : 'OFF'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: isVentilacionOn ? Colors.red : Colors.green,
+                backgroundColor: isVentilacionOn ? Colors.green : Colors.red,
+              ),
+            ),
+            SizedBox(height: 5),
+            Text(
+              'Riego',
+              style: TextStyle(fontSize: 20),
+            ),
+            ElevatedButton(
+              onPressed: toggleRiego,
+              child: Text(isRiegoOn ? 'ON' : 'OFF'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: isRiegoOn ? Colors.green : Colors.red,
               ),
             ),
             ElevatedButton(
-              onPressed: () {
-                Navigator.pushReplacementNamed(context,
-                    '/main_interface_screen'); // Navegar a la pantalla de inicio
+              onPressed: () async {
+                final prefs = await SharedPreferences.getInstance();
+                final userId = prefs.getInt('user_id') ??
+                    0; // Obtén el userId almacenado en SharedPreferences
+
+                Navigator.pushReplacementNamed(
+                  context,
+                  '/main_interface_screen', // Ruta hacia la pantalla de interfaz principal
+                  arguments: userId, // Pasa el userId aquí
+                );
               },
               child: Text('Atrás'),
             ),

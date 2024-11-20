@@ -30,12 +30,27 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
       ),
       home: HomeScreen(),
+      // Utiliza onGenerateRoute para manejar rutas que requieren argumentos
+      onGenerateRoute: (settings) {
+        if (settings.name == '/main_interface_screen') {
+          // Obtiene el userId pasado como argumento
+          final userId = settings.arguments as int?;
+          if (userId != null) {
+            return MaterialPageRoute(
+              builder: (context) => MainInterfaceScreen(userId: userId),
+            );
+          }
+        }
+        return null;
+        /* Rutas adicionales con onGenerateRoute si es necesario
+        return MaterialPageRoute(builder: (context) => HomeScreen());*/
+      },
       routes: {
         '/login': (context) => LoginScreen(),
         '/register': (context) => RegisterScreen(),
         '/home_screen': (context) => HomeScreen(),
         '/complete_profile_screen': (context) => CompleteProfileScreen(),
-        '/main_interface_screen': (context) => MainInterfaceScreen(),
+        //  '/main_interface_screen': (context) => MainInterfaceScreen(),
         '/automate_greenhouse': (context) => AutomateGreenhouseScreen(),
         '/monitor_interface': (context) => MonitorInterfaceScreen(),
         '/monitortomato': (context) => MonitorTomatoScreen(),

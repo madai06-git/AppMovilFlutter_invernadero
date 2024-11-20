@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:app_tesisinver/screens/monitortomato/monitortomato.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MonitorInterfaceScreen extends StatefulWidget {
   const MonitorInterfaceScreen({Key? key}) : super(key: key);
@@ -11,7 +14,45 @@ class MonitorInterfaceScreen extends StatefulWidget {
 class _MonitorInterfaceState extends State<MonitorInterfaceScreen> {
   List<String> selectedCrops = [];
 
-  void toggleCropSelection(String crop) {
+  // Método para cargar los cultivos seleccionados desde el servidor
+  Future<void> loadSelectedCrops() async {
+    final prefs = await SharedPreferences.getInstance();
+    final userId = prefs.getInt('user_id'); // ID del usuario guardado
+
+    if (userId != null) {
+      final url =
+          Uri.parse('http://193.168.1.69:3000/obtener-cultivos/$userId');
+      try {
+        final response = await http.get(url);
+
+        if (response.statusCode == 200) {
+          final data = json.decode(response.body);
+          if (data.containsKey('cultivos') && data['cultivos'] is List) {
+            setState(() {
+              selectedCrops = List<String>.from(data['cultivos']);
+            });
+          } else {
+            print('La respuesta no contiene cultivos');
+          }
+        } else {
+          print('Error al recuperar los cultivos: ${response.statusCode}');
+        }
+      } catch (e) {
+        print('Error al hacer la solicitud HTTP: $e');
+      }
+    } else {
+      print('ID de usuario no encontrado');
+    }
+  }
+
+  /* Future<void> loadSelectedCrops() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      selectedCrops = prefs.getStringList('selected_crops') ?? [];
+    });
+  }
+*/
+  /*void toggleCropSelection(String crop) {
     setState(() {
       if (selectedCrops.contains(crop)) {
         selectedCrops.remove(crop);
@@ -19,6 +60,12 @@ class _MonitorInterfaceState extends State<MonitorInterfaceScreen> {
         selectedCrops.add(crop);
       }
     });
+  }*/
+  @override
+  void initState() {
+    super.initState();
+    loadSelectedCrops(); // Cargar los cultivos seleccionados al iniciar la pantalla
+    toggleMode("modo_monitoreo");
   }
 
   @override
@@ -92,7 +139,7 @@ class CropButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: isSelected ? onTap : null,
       child: Container(
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
@@ -106,5 +153,18 @@ class CropButton extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+Future<void> toggleMode(String mode) async {
+  final Uri uri = Uri.parse('http://193.168.1.69:3000/setMode');
+  final response = await http.post(uri,
+      body: json.encode({"mode": mode}),
+      headers: {"Content-Type": "application/json"});
+  if (response.statusCode != 200) {
+    print('Error al cambiar el modo: ${response.statusCode}');
+  } else {
+    print('Modo cambiado a: $mode');
+    await Future.delayed(Duration(seconds: 1)); // Espera breve
   }
 }

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:app_tesisinver/screens/maininterface/main_interface_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -19,7 +20,7 @@ class LoginScreen extends StatelessWidget {
     }
 
     //servidor
-    final Uri uri = Uri.parse('http://192.168.1.75:3000/login');
+    final Uri uri = Uri.parse('http://193.168.1.69:3000/login');
 
     try {
       final response = await http.post(
@@ -29,11 +30,23 @@ class LoginScreen extends StatelessWidget {
       );
 
       if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final int userId = data['user_id'];
+
+        // Guarda el userId en SharedPreferences
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setInt('user_id', userId);
         // Inicio de sesión exitoso
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Inicio de sesión exitoso')),
         );
-        Navigator.pushReplacementNamed(context, '/main_interface_screen');
+        // Navegar a MainInterfaceScreen pasando el userId
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MainInterfaceScreen(userId: userId),
+          ),
+        );
       } else {
         // Error en el inicio de sesión
         ScaffoldMessenger.of(context).showSnackBar(

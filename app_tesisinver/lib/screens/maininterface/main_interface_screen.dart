@@ -1,12 +1,49 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:app_tesisinver/screens/home/home_screen.dart';
 import 'package:app_tesisinver/screens/deleteaccount/delete_account.dart';
 import 'package:app_tesisinver/screens/automategreenhouses/automate_greenhouse.dart';
 import 'package:app_tesisinver/screens/monitorcultivation/monitor_interface.dart';
 
 class MainInterfaceScreen extends StatelessWidget {
+  final int userId;
+
+  MainInterfaceScreen({required this.userId});
+
+  Future<void> obtenerCultivos() async {
+    final Uri uri =
+        Uri.parse('http://193.168.1.69:3000/obtener-cultivos/$userId');
+
+    final response = await http.get(uri);
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      // Procesar cultivos
+    } else {
+      // Manejar error
+    }
+  }
+
+  // Método para eliminar la cuenta
+  Future<void> eliminarCuenta(BuildContext context) async {
+    final Uri uri =
+        Uri.parse('http://193.168.1.69:3000/eliminar-cuenta/$userId');
+
+    final response = await http.delete(uri);
+
+    if (response.statusCode == 200) {
+      // Si la cuenta se elimina con éxito, navega a la pantalla de inicio
+      Navigator.pushReplacementNamed(context, '/home_screen');
+    } else {
+      // Manejar error
+      print('Error al eliminar la cuenta');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    obtenerCultivos(); // Llamar a obtenerCultivos cuando se carga la pantalla
+
     return Scaffold(
       appBar: AppBar(
         title: Text('¡¡BIENVENIDO!!'),
@@ -62,22 +99,24 @@ class MainInterfaceScreen extends StatelessWidget {
                 // Aquí puedes agregar la lógica para eliminar un cultivo
               },
             ),
-            ListTile(
+            /*ListTile(
               title: Text('Editar información'),
               onTap: () {
                 // Aquí puedes agregar la lógica para editar la información del usuario
               },
-            ),
+            ),*/
             ListTile(
               title: Text('Eliminar cuenta'),
-              onTap: () {},
+              onTap: () {
+                _showDeleteConfirmationDialog(context);
+              },
             ),
             ElevatedButton(
               onPressed: () {
                 Navigator.pushReplacementNamed(
                     context, '/home_screen'); // Navegar a la pantalla de inicio
               },
-              child: Text('Atrás'),
+              child: Text('Cerrar sesión'),
             ),
           ],
         ),
@@ -97,6 +136,35 @@ class MainInterfaceScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  // Método para mostrar el cuadro de diálogo de confirmación
+  void _showDeleteConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('¿Estás seguro de eliminar tu cuenta?'),
+          content: Text('Esta acción no se puede deshacer.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Cerrar el cuadro de diálogo
+              },
+              child: Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Cerrar el cuadro de diálogo
+                eliminarCuenta(
+                    context); // Llamar al método para eliminar la cuenta
+              },
+              child: Text('Eliminar'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

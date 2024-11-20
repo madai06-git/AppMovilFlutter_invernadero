@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:app_tesisinver/screens/monitortomato/monitortomato.dart';
-import 'package:app_tesisinver/screens/controltomato/controltomato.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ControlInterfaceScreen extends StatefulWidget {
   const ControlInterfaceScreen({Key? key}) : super(key: key);
@@ -12,14 +13,42 @@ class ControlInterfaceScreen extends StatefulWidget {
 class _ControlInterfaceState extends State<ControlInterfaceScreen> {
   List<String> selectedCrops = [];
 
-  void toggleCropSelection(String crop) {
-    setState(() {
-      if (selectedCrops.contains(crop)) {
-        selectedCrops.remove(crop);
-      } else {
-        selectedCrops.add(crop);
+  // Método para cargar los cultivos seleccionados desde el servidor
+  Future<void> loadSelectedCrops() async {
+    final prefs = await SharedPreferences.getInstance();
+    final userId = prefs.getInt('user_id'); // ID del usuario guardado
+
+    if (userId != null) {
+      final url =
+          Uri.parse('http://193.168.1.69:3000/obtener-cultivos/$userId');
+      try {
+        final response = await http.get(url);
+
+        if (response.statusCode == 200) {
+          final data = json.decode(response.body);
+          if (data.containsKey('cultivos') && data['cultivos'] is List) {
+            setState(() {
+              selectedCrops = List<String>.from(data['cultivos']);
+            });
+          } else {
+            print('La respuesta no contiene cultivos');
+          }
+        } else {
+          print('Error al recuperar los cultivos: ${response.statusCode}');
+        }
+      } catch (e) {
+        print('Error al hacer la solicitud HTTP: $e');
       }
-    });
+    } else {
+      print('ID de usuario no encontrado');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadSelectedCrops();
+    toggleMode("modo_control");
   }
 
   @override
@@ -45,25 +74,26 @@ class _ControlInterfaceState extends State<ControlInterfaceScreen> {
                   },
                 ),
                 CropButton(
-                    crop: 'Chile',
-                    isSelected: selectedCrops.contains('Chile'),
-                    onTap: () {
-                      Navigator.pushReplacementNamed(context, '/controlchili');
-                    }),
+                  crop: 'Chile',
+                  isSelected: selectedCrops.contains('Chile'),
+                  onTap: () {
+                    Navigator.pushReplacementNamed(context, '/controlchili');
+                  },
+                ),
                 CropButton(
-                    crop: 'Berrie',
-                    isSelected: selectedCrops.contains('Berrie'),
-                    onTap: () {
-                      Navigator.pushReplacementNamed(
-                          context, '/controlberries');
-                    }),
+                  crop: 'Berrie',
+                  isSelected: selectedCrops.contains('Berrie'),
+                  onTap: () {
+                    Navigator.pushReplacementNamed(context, '/controlberries');
+                  },
+                ),
                 CropButton(
-                    crop: 'Pepino',
-                    isSelected: selectedCrops.contains('Pepino'),
-                    onTap: () {
-                      Navigator.pushReplacementNamed(
-                          context, '/controlcucumber');
-                    }),
+                  crop: 'Pepino',
+                  isSelected: selectedCrops.contains('Pepino'),
+                  onTap: () {
+                    Navigator.pushReplacementNamed(context, '/controlcucumber');
+                  },
+                ),
               ],
             ),
             SizedBox(height: 20),
@@ -95,7 +125,7 @@ class CropButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: isSelected ? onTap : null,
       child: Container(
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
@@ -109,5 +139,18 @@ class CropButton extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+Future<void> toggleMode(String mode) async {
+  final Uri uri = Uri.parse('http://193.168.1.69:3000/setMode');
+  final response = await http.post(uri,
+      body: json.encode({"mode": mode}),
+      headers: {"Content-Type": "application/json"});
+  if (response.statusCode != 200) {
+    print('Error al cambiar el modo: ${response.statusCode}');
+  } else {
+    print('Modo cambiado a: $mode');
+    await Future.delayed(Duration(seconds: 1)); // Espera breve
   }
 }

@@ -30,8 +30,11 @@ class CompleteProfileScreen extends StatelessWidget {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Aquí navegas a la pantalla de automatizar huertos de traspatio
-                Navigator.pushNamed(context, '/automate_backyard_gardens');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AutomateGreenhouseScreen()),
+                );
               },
               child: Text('Automatizar Huertos de Traspatio'),
             ),

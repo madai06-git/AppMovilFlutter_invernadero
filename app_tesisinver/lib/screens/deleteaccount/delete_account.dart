@@ -9,7 +9,7 @@ class DeleteAccountScreen extends StatelessWidget {
   DeleteAccountScreen({required this.userId});
 
   Future<void> deleteAccount(BuildContext context) async {
-    final Uri uri = Uri.parse('http://192.168.1.75:3000/delete_account');
+    final Uri uri = Uri.parse('http://193.168.1.69:3000/delete_account');
 
     try {
       final response = await http.post(
