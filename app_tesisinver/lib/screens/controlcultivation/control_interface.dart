@@ -10,6 +10,8 @@ class ControlInterfaceScreen extends StatefulWidget {
   _ControlInterfaceState createState() => _ControlInterfaceState();
 }
 
+final String serverUrl = 'http://192.168.1.77:3000';
+
 class _ControlInterfaceState extends State<ControlInterfaceScreen> {
   List<String> selectedCrops = [];
 
@@ -19,8 +21,7 @@ class _ControlInterfaceState extends State<ControlInterfaceScreen> {
     final userId = prefs.getInt('user_id'); // ID del usuario guardado
 
     if (userId != null) {
-      final url =
-          Uri.parse('http://193.168.1.69:3000/obtener-cultivos/$userId');
+      final url = Uri.parse('$serverUrl/obtener-cultivos/$userId');
       try {
         final response = await http.get(url);
 
@@ -143,10 +144,11 @@ class CropButton extends StatelessWidget {
 }
 
 Future<void> toggleMode(String mode) async {
-  final Uri uri = Uri.parse('http://193.168.1.69:3000/setMode');
+  final Uri uri = Uri.parse('$serverUrl/setMode');
   final response = await http.post(uri,
       body: json.encode({"mode": mode}),
       headers: {"Content-Type": "application/json"});
+
   if (response.statusCode != 200) {
     print('Error al cambiar el modo: ${response.statusCode}');
   } else {

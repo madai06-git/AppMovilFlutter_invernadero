@@ -15,7 +15,7 @@ class _ControlBerriesState extends State<ControlBerries> {
   bool isRiegoOn = false;
 
   final String serverUrl =
-      'http://193.168.1.69:3000'; // Reemplaza con la URL de tu servidor
+      'http://192.168.1.77:3000'; // Reemplaza con la URL de tu servidor
 
   Future<void> sendCommand(String command) async {
     final url = Uri.parse('$serverUrl/setCommand');

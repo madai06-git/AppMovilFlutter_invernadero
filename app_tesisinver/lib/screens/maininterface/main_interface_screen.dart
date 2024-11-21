@@ -8,12 +8,11 @@ import 'package:app_tesisinver/screens/monitorcultivation/monitor_interface.dart
 
 class MainInterfaceScreen extends StatelessWidget {
   final int userId;
-
+  final String serverUrl = 'http://192.168.1.77:3000';
   MainInterfaceScreen({required this.userId});
 
   Future<void> obtenerCultivos() async {
-    final Uri uri =
-        Uri.parse('http://193.168.1.69:3000/obtener-cultivos/$userId');
+    final Uri uri = Uri.parse('$serverUrl/obtener-cultivos/$userId');
 
     final response = await http.get(uri);
     if (response.statusCode == 200) {
@@ -24,10 +23,24 @@ class MainInterfaceScreen extends StatelessWidget {
     }
   }
 
+  /*Future<void> setMode(String mode) async {
+    final Uri uri = Uri.parse('$serverUrl/setMode');
+    final response = await http.post(
+      uri,
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({'mode': mode}),
+    );
+
+    if (response.statusCode == 200) {
+      print('Modo cambiado a: $mode');
+    } else {
+      print('Error al cambiar el modo: ${response.body}');
+    }
+  }*/
+
   // Método para eliminar la cuenta
   Future<void> eliminarCuenta(BuildContext context) async {
-    final Uri uri =
-        Uri.parse('http://193.168.1.69:3000/eliminar-cuenta/$userId');
+    final Uri uri = Uri.parse('$serverUrl/eliminar-cuenta/$userId');
 
     final response = await http.delete(uri);
 
@@ -81,14 +94,16 @@ class MainInterfaceScreen extends StatelessWidget {
             ),
             ListTile(
               title: Text('Monitorear cultivo'),
-              onTap: () {
+              onTap: () async {
+                //await setMode('modo_monitoreo');
                 Navigator.pushReplacementNamed(context,
                     '/monitor_interface'); // Navegar a la pantalla de monitorear cultivos
               },
             ),
             ListTile(
               title: Text('Controlar cultivo'),
-              onTap: () {
+              onTap: () async {
+                //await setMode('modo_control');
                 Navigator.pushReplacementNamed(context, '/control_interface');
                 // Aquí puedes agregar la lógica para navegar a la pantalla de control de cultivo
               },

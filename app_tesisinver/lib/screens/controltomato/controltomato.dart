@@ -15,7 +15,7 @@ class _ControlTomatoState extends State<ControlTomato> {
   bool isRiegoOn = false;
 
   final String serverUrl =
-      'http://193.168.1.69:3000'; // Reemplaza con la URL de tu servidor
+      'http://192.168.1.77:3000'; // Reemplaza con la URL de tu servidor
 
   Future<void> sendCommand(String command) async {
     final url = Uri.parse('$serverUrl/setCommand');
@@ -30,6 +30,7 @@ class _ControlTomatoState extends State<ControlTomato> {
         print('Comando enviado correctamente: $command');
       } else {
         print('Error al enviar comando: ${response.statusCode}');
+        print('Respuesta del servidor: ${response.body}');
       }
     } catch (e) {
       print('Error al enviar comando: $e');

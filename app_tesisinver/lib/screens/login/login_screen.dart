@@ -20,7 +20,7 @@ class LoginScreen extends StatelessWidget {
     }
 
     //servidor
-    final Uri uri = Uri.parse('http://193.168.1.69:3000/login');
+    final Uri uri = Uri.parse('http://192.168.1.77:3000/login');
 
     try {
       final response = await http.post(

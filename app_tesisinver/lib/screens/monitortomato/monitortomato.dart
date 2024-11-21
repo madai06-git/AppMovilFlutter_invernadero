@@ -35,7 +35,7 @@ class _MonitorTomatoScreenState extends State<MonitorTomatoScreen> {
 
   Future<void> fetchData() async {
     final response =
-        await http.get(Uri.parse('http://193.168.1.69:3000/api/data'));
+        await http.get(Uri.parse('http://192.168.1.77:3000/api/data'));
 
     print('Estado de la respuesta: ${response.statusCode}');
     print('Respuesta: ${response.body}');

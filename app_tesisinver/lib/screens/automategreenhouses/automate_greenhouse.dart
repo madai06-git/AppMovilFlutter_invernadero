@@ -19,7 +19,7 @@ class _AutomateGreenhouseScreenState extends State<AutomateGreenhouseScreen> {
     final userId = prefs.getInt('user_id') ?? 0;
 
     if (userId != 0 && selectedCrops.isNotEmpty) {
-      final url = Uri.parse('http://193.168.1.69:3000/save_crops');
+      final url = Uri.parse('http://192.168.1.77:3000/save_crops');
 
       final Map<String, dynamic> data = {
         'user_id': userId,
